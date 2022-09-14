@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: Deploys an s3 bucket that can be accessed by Deployment and EC2 role
+
+Resources:
+  ArtifactsS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      BucketName: duedu-app-mod-lab-example-starter-php-artifacts
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  ArtifactsS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ArtifactsS3Bucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - s3:PutObject
+              - s3:GetObject
+              - s3:ListBucket
+              - s3:AbortMultipartUpload
+            Effect: Allow
+            Resource:
+              - !Ref ArtifactsS3Bucket
+            Principal:
+              {{ resolve:ssm:cicd-role-arn }}
