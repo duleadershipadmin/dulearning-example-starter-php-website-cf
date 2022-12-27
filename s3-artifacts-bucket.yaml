@@ -9,8 +9,8 @@ Resources:
       AccessControl: Private
       BucketEncryption:
         ServerSideEncryptionConfiguration:
-          ServerSideEncryptionByDefault:
-            SSEAlgorithm: AES256
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
       BucketName: duedu-app-mod-lab-example-starter-php-artifacts
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
@@ -34,4 +34,4 @@ Resources:
             Resource:
               - !Ref ArtifactsS3Bucket
             Principal:
-              {{ resolve:ssm:cicd-role-arn }}
+              '{{ resolve:ssm:github-cicd-role-arn }}'
