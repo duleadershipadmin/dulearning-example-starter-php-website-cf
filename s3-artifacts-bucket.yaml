@@ -36,4 +36,14 @@ Resources:
               - !Sub arn:aws:s3:::${ArtifactsS3Bucket}/*
             Principal:
               AWS:
-                - '{{resolve:ssm:github-cicd-role-arn}}'
+                - '{{resolve:ssm:cicd-role-arn}}'
+
+  IdentityProviderParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      DataType: text
+      Description: The name of the s3 bucket created for the artifacts
+      Name: dulearning-app-mod-lab-example-starter-php-artifacts-bucket
+      Tier: Standard
+      Type: String
+      Value: !Ref ArtifactsS3Bucket
